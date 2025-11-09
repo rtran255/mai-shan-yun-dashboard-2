@@ -1,12 +1,26 @@
+# app.py
+import time
+import random
+
 import dash
 from dash import html, dcc, Input, Output, no_update
-import time, random
+import dash_bootstrap_components as dbc
+import pandas as pd
 
-# --- App setup ---
-app = dash.Dash(__name__, suppress_callback_exceptions=True)
-server = app.server
+# --- Use a Bootstrap theme from dash_bootstrap_components ---
+external_stylesheets = [dbc.themes.BOOTSTRAP]
 
-# --- Quotes ---
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets, suppress_callback_exceptions=True)
+server = app.server  # required by Gunicorn / Render
+
+# --- Example placeholder DataFrame (pandas available) ---
+df_sample = pd.DataFrame({
+    "date": pd.date_range("2025-01-01", periods=12, freq="M"),
+    "usage": [50, 60, 55, 80, 75, 90, 120, 110, 95, 85, 70, 65],
+    "purchases": [60, 55, 65, 70, 90, 85, 140, 100, 100, 80, 70, 60]
+})
+
+# --- Quotes for loading overlay ---
 AGGIE_QUOTES = [
     "Gig ’em, Aggies!",
     "From College Station with Maroon Pride.",
@@ -97,7 +111,8 @@ def show_loading(selected):
 )
 def update_graph(selected):
     """Placeholder graph logic — to be replaced with Plotly visuals later"""
-    time.sleep(1.2)  # Simulate data loading delay
+    # simulate load to demonstrate loading overlay
+    time.sleep(1.2)
 
     desc = {
         "inventory": "Overview of all inventory items and usage trends.",
@@ -106,7 +121,7 @@ def update_graph(selected):
         "forecasting": "Predictive trends and restock suggestions."
     }.get(selected, "Select a view to explore inventory intelligence.")
 
-    # Empty figure placeholder for now
+    # For now, return an empty figure (your data & Plotly figures go here)
     fig = {}
 
     return fig, desc
